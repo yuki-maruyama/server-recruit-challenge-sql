@@ -29,6 +29,8 @@ func (r *singerRepository) GetAll(ctx context.Context) ([]*model.Singer, error) 
 		name
 	FROM
 		singers
+	WHERE
+		deleted_at IS NULL
 	`)
 	if err != nil {
 		return nil, err
@@ -61,6 +63,7 @@ func (r *singerRepository) Get(ctx context.Context, id model.SingerID) (*model.S
 		singers
 	WHERE
 		id = ?
+		AND deleted_at IS NULL
 	`, id).Scan(&singer.ID, &singer.Name); err != nil {
 		return nil, err
 	}
