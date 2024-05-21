@@ -5,20 +5,20 @@ import (
 	"time"
 
 	"github.com/go-sql-driver/mysql"
+	"github.com/pulse227/server-recruit-challenge-sample/util"
 )
 
 func Init() (*sql.DB, error) {
-	// TODO: コンフィグ突っ込めるようにする（環境変数？）
 	jst, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
 		return nil, err
 	}
 
 	c := mysql.Config{
-		DBName:    "app",
-		User:      "root",
-		Passwd:    "mysql",
-		Addr:      "db:3306",
+		DBName:    util.GetEnv("DB_NAME", "app"),
+		User:      util.GetEnv("DB_USER", "root"),
+		Passwd:    util.GetEnv("DB_PASSWORD", "mysql"),
+		Addr:      util.GetEnv("DB_ADDRESS", "localhost:3306"),
 		Net:       "tcp",
 		ParseTime: true,
 		Collation: "utf8mb4_general_ci",
