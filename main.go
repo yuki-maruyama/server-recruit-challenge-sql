@@ -9,13 +9,21 @@ import (
 	"time"
 
 	"github.com/pulse227/server-recruit-challenge-sample/api"
+	"github.com/pulse227/server-recruit-challenge-sample/db/mysql"
 )
 
 func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 
-	r := api.NewRouter()
+	db, err := mysql.Init()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := db.PingContext(ctx); err != nil {
+		log.Fatal("DB ping failed: ", err)
+	}
+	r := api.NewRouter(db)
 
 	server := &http.Server{
 		Addr:    ":8888",

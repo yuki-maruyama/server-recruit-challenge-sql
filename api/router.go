@@ -1,17 +1,18 @@
 package api
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/pulse227/server-recruit-challenge-sample/api/middleware"
 	"github.com/pulse227/server-recruit-challenge-sample/controller"
-	"github.com/pulse227/server-recruit-challenge-sample/infra/memorydb"
+	"github.com/pulse227/server-recruit-challenge-sample/infra/mysql"
 	"github.com/pulse227/server-recruit-challenge-sample/service"
 )
 
-func NewRouter() *mux.Router {
-	singerRepo := memorydb.NewSingerRepository()
+func NewRouter(db *sql.DB) *mux.Router {
+	singerRepo := mysql.NewSingerRepository(db)
 	singerService := service.NewSingerService(singerRepo)
 	singerController := controller.NewSingerController(singerService)
 
