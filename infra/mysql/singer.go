@@ -3,7 +3,6 @@ package mysql
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
 	"github.com/pulse227/server-recruit-challenge-sample/model"
 	"github.com/pulse227/server-recruit-challenge-sample/repository"
@@ -78,5 +77,10 @@ func (r *singerRepository) Add(ctx context.Context, singer *model.Singer) error 
 }
 
 func (r *singerRepository) Delete(ctx context.Context, id model.SingerID) error {
-	return fmt.Errorf("need to implement")
+	if _, err := r.db.ExecContext(ctx, `
+	DELETE FROM singers WHERE id = ?
+	`, id); err != nil {
+		return err
+	}
+	return nil
 }
