@@ -69,7 +69,12 @@ func (r *singerRepository) Get(ctx context.Context, id model.SingerID) (*model.S
 }
 
 func (r *singerRepository) Add(ctx context.Context, singer *model.Singer) error {
-	return fmt.Errorf("need to implement")
+	if _, err := r.db.ExecContext(ctx, `
+	INSERT INTO singers (id, name) VALUES (?, ?)
+	`, singer.ID, singer.Name); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *singerRepository) Delete(ctx context.Context, id model.SingerID) error {
