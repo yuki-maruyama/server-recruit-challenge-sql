@@ -9,7 +9,7 @@ import (
 )
 
 func Init() (*sql.DB, error) {
-	jst, err := time.LoadLocation("Asia/Tokyo")
+	tz, err := time.LoadLocation(util.GetEnv("TZ", "UTC"))
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +22,7 @@ func Init() (*sql.DB, error) {
 		Net:       "tcp",
 		ParseTime: true,
 		Collation: "utf8mb4_general_ci",
-		Loc:       jst,
+		Loc:       tz,
 	}
 
 	db, err := sql.Open("mysql", c.FormatDSN())

@@ -5,6 +5,7 @@ services:
       - "8888:8888"
     environment:
       DB_ADDRESS: "db:3306"
+      TZ: "Asia/Tokyo"
     depends_on:
       db:
         condition: service_healthy
@@ -14,6 +15,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: mysql
+      TZ: "Asia/Tokyo"
     volumes:
        - ./local/db/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
        - db_data:/var/lib/mysql
