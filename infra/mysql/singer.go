@@ -53,7 +53,19 @@ func (r *singerRepository) GetAll(ctx context.Context) ([]*model.Singer, error) 
 }
 
 func (r *singerRepository) Get(ctx context.Context, id model.SingerID) (*model.Singer, error) {
-	return nil, fmt.Errorf("need to implement")
+	var singer model.Singer
+	if err := r.db.QueryRowContext(ctx, `
+	SELECT
+		id,
+		name
+	FROM
+		singers
+	WHERE
+		id = ?
+	`, id).Scan(&singer.ID, &singer.Name); err != nil {
+		return nil, err
+	}
+	return &singer, nil
 }
 
 func (r *singerRepository) Add(ctx context.Context, singer *model.Singer) error {
